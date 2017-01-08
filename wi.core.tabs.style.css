@@ -1,0 +1,127 @@
+/**
+ * Style of tabs module
+ * 
+ * @author André Ferreira <andrehrf@gmail.com>
+ * @license MIT
+ */
+
+.wi-tabs{
+    position: absolute;
+    background-color: var(--wi-navbar-bg-color);
+    top: 29px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+}
+
+.wi-tabs-list{
+    height: 25px;
+    color: #f5f5f5;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    background: var(--wi-navbar-bg-color);
+    box-shadow: 0 -1px 0 0 #1f1f1f inset, 0 1px 0 0 rgba(255, 255, 255, 0.075) inset;
+    border-bottom: var(--wi-navbar-border);
+    position: relative;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    z-index: 100;
+    clip: rect(0, 3000px, 29px, 0px);
+    transition-property: padding-right;
+    margin-bottom: 1px;
+}
+
+.wi-tabs-list-itens{
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    overflow: hidden;
+    width: calc(100% - 26px);
+    height: 26px;
+}
+
+.wi-tabs-list-item{
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    max-width: 200px;
+    height: 24px;
+    color: #bababa;
+    margin-top: 2px;
+    margin-left: -15px;
+    margin-right: 2px;
+    cursor: default;   
+    outline: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.wi-tabs-list-item:first-child{
+    margin-left: 0px;
+}
+
+.wi-tabs-list-item > svg{
+    width: 100%;
+    height: 100%;
+    fill: var(--wi-navbar-bg-color);
+    stroke: #000;
+    -webkit-filter: drop-shadow( -1px -1px 1px rgba(0,0,0,0.2) );
+    filter: drop-shadow( -1px -1px 1px rgba(0,0,0,0.2) );
+    transform: translateX(0.25px) translateY(0.25px);
+}
+
+.wi-tabs-list-item-title{
+    position: absolute;
+    top: 5px;
+    left: 20px;
+}
+
+.wi-tabs-list-item-active{
+    color: #f5f5f5;
+    height: 26px;
+    z-index: 6000;
+}
+
+.wi-tabs-list-item-active > svg{
+    width: 100%;
+    height: 100%;
+    fill: var(--wi-default-bg3-color);
+    stroke: #000;
+    -webkit-filter: drop-shadow( -1px -1px 1px rgba(0,0,0,0.2) );
+    filter: drop-shadow( -1px -1px 1px rgba(0,0,0,0.2) );
+}
+
+.wi-tabs-contents{
+    position: absolute;
+    top: 22px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+}
+
+.wi-tabs-contents-item{
+    position: absolute;
+    top: 4px;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    background-color: #FFF;
+    display: none;
+}
+
+.wi-tabs-contents-item-active{
+    display: block;
+}
+
+.wi-tabs-contents-item-editor{
+    border-top: 7px solid var(--wi-default-bg3-color);
+    top: 0px;
+    bottom: 7px;
+}
