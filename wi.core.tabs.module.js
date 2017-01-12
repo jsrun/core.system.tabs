@@ -28,7 +28,7 @@ module.exports = {
      */
     assets: {
         css: [__dirname + "/wi.core.tabs.style.css"],
-        js: [__dirname + "/draggabilly.pkgd.min.js", __dirname + "/wi.core.tabs.events.js"]
+        js: [__dirname + "/wi.core.tabs.events.js"]
     },
     
     /**
@@ -40,4 +40,4 @@ module.exports = {
     getTemplate: function(settings, dirname, argv, app, i18n, passport, mongodb, webide){
         return TemplateEngine(__dirname + "/wi.core.tabs.tpl.ejs").seti18n(i18n).render();
     }
-}
+};

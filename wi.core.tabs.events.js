@@ -92,10 +92,6 @@
                         });
                     });
                 }
-              
-                
-
-                
                
                 var tabListContents = document.createElement("div");
                 tabListContents.id = "wi-tc-" + id;     
@@ -191,9 +187,4 @@
             return this.itens;
         }
     };    
-    
-    webide.tabs.add("Teste", "C:\\teste.txt", "editor", null);
-    webide.tabs.add("Teste2", "C:\\teste2.txt", "editor", null);
-    webide.tabs.add("Teste3", "C:\\teste3.txt", "editor", null);
-    webide.tabs.add("Teste4", "C:\\teste4.txt", "editor", null);
 })();
