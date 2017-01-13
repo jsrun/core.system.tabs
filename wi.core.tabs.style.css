@@ -81,7 +81,7 @@
     -webkit-filter: drop-shadow( -1px -1px 1px rgba(0,0,0,0.2) );
     filter: drop-shadow( -1px -1px 1px rgba(0,0,0,0.2) );
     transform: translateX(0.25px) translateY(0.25px);
-    fill: var(--wi-navbar-bg-color);
+    fill: var(--wi-default-bg-color);
 }
 
 .wi-tabs-list-item-title{

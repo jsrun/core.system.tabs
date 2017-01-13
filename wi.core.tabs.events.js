@@ -130,7 +130,7 @@
                         editor.resize();
                         
                         if(typeof cb == "function")
-                            cb("wi-ed-" + id);
+                            cb("wi-ed-" + id, editor);
                     break;
                     case "url":
                         tabListContents.innerHTML = "<div id='wi-url-" + id + "'></div>";  
@@ -164,6 +164,17 @@
         },
         
         /**
+         * Function to check for tab by path
+         * 
+         * @param string path
+         * @return boolean
+         */
+        hasByPath: function(path){
+            var id = webide.createNamespace(path);
+            return this.has(id);
+        },
+        
+        /**
          * Function to focus on a specific tab
          * 
          * @param string id
@@ -176,6 +187,17 @@
                 $("#wi-tl-" + id).addClass("wi-tabs-list-item-active");
                 $("#wi-tc-" + id).addClass("wi-tabs-contents-item-active");
             }
+        },
+        
+        /**
+         * Function to focus on a specific tab by path
+         * 
+         * @param string path
+         * @return void
+         */
+        focusByPath: function(path){
+            var id = webide.createNamespace(path);
+            this.focus(id);
         },
         
         /**
