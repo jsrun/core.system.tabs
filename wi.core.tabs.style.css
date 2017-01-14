@@ -19,43 +19,58 @@
     background-color: var(--wi-navbar-bg-color);
 }
 
-.wi-tabs-list{
-    height: 25px;
-    color: #f5f5f5;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.075) inset;
-    position: relative;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    z-index: 100;
-    clip: rect(0, 3000px, 29px, 0px);
-    transition-property: padding-right;
-    margin-bottom: 1px;
-    background: var(--wi-navbar-bg-color);
-    border-bottom: var(--wi-navbar-border);
+.wi-tabs-contents{
+    width: 100%;
+    height: 100%;
 }
 
-.wi-tabs-list-itens{
-    display: -webkit-flex; /* Safari */
-    display: flex;
+.lm_goldenlayout{
+    background-color: var(--wi-default-bg1-color);
+}
+
+.lm_header{
+    /*box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.075) inset;*/
+    border-bottom: var(--wi-default-border);
+}
+
+.lm_tab{
+    background-color: var(--wi-default-bg1-color) !important;
+    box-shadow: none !important;
+}
+
+.lm_active{
+    background-color: var(--wi-default-bg2-color) !important;
+    border: var(--wi-default-border) !important;
+    border-bottom: 0px !important;
+}
+
+.lm_content{
+    background-color: var(--wi-default-bg2-color);
+    border: var(--wi-default-border) !important;
+    border-top: none !important;
+}
+
+.lm_splitter.lm_vertical{
+    border: 0px;
+    background-color: var(--wi-default-bg1-color);
+    opacity: 1;
+}
+
+.lm_splitter.lm_horizontal{
+    border: 0px;
+    background-color: var(--wi-default-bg1-color);
+    opacity: 1;
+}
+
+.lm_active{
+    margin: auto;
     overflow: hidden;
-    width: calc(100% - 26px);
-    height: 26px;
-    border-left: var(--wi-default-border);
-}
-
-.wi-tabs-list-item{
-    -webkit-flex: 1 1 auto;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
-    max-width: 200px;
+    min-width: 100px;
     height: 24px;
     color: #bababa;
     margin-top: 2px;
-    margin-left: -15px;
-    margin-right: 2px;
+    margin-left: 0px;
+    margin-right: 0px;
     cursor: default;   
     outline: 0;
     appearance: none;
@@ -68,67 +83,25 @@
     -ms-user-select: none;
     user-select: none;
     font-family: var(--wi-default-font-family);
+    background-color: var(--wi-default-bg1-color);
+    border-right: 1px solid transparent;
+    border-left: 1px solid transparent;
+    border-top: 1px solid transparent;
+    -webkit-border-top-left-radius: var(--wi-default-border-radius);
+    -webkit-border-top-right-radius: var(--wi-default-border-radius);
+    -moz-border-radius-topleft: var(--wi-default-border-radius);
+    -moz-border-radius-topright: var(--wi-default-border-radius);
+    border-top-left-radius: var(--wi-default-border-radius);
+    border-top-right-radius: var(--wi-default-border-radius);
+    box-shadow: none !important;
 }
 
-.wi-tabs-list-item:first-child{
-    margin-left: 0px;
-}
-
-.wi-tabs-list-item > svg{
-    width: 100%;
-    height: 100%;
-    stroke: #000;
-    -webkit-filter: drop-shadow( -1px -1px 1px rgba(0,0,0,0.2) );
-    filter: drop-shadow( -1px -1px 1px rgba(0,0,0,0.2) );
-    transform: translateX(0.25px) translateY(0.25px);
-    fill: var(--wi-default-bg-color);
-}
-
-.wi-tabs-list-item-title{
-    position: absolute;
-    top: 5px;
-    left: 20px;
-}
-
-.wi-tabs-list-item-active{
-    color: #f5f5f5;
-    height: 26px;
-    z-index: 6000;
-}
-
-.wi-tabs-list-item-active > svg{
-    width: 100%;
-    height: 100%;
-    stroke: #000;
-    -webkit-filter: drop-shadow( -1px -1px 1px rgba(0,0,0,0.2) );
-    filter: drop-shadow( -1px -1px 1px rgba(0,0,0,0.2) );
-    fill: var(--wi-default-bg3-color);
-}
-
-.wi-tabs-contents{
-    position: absolute;
-    top: 22px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-}
-
-.wi-tabs-contents-item{
-    position: absolute;
-    top: 4px;
-    bottom: 0px;
-    left: 0;
-    right: 0;
-    background-color: #FFF;
+.lm_controls{
     display: none;
 }
 
-.wi-tabs-contents-item-active{
-    display: block;
-}
-
-.wi-tabs-contents-item-editor{
-    border-top: 7px solid var(--wi-default-bg3-color);
-    top: 0px;
-    bottom: 7px;
+.lm_dropTargetIndicator{
+    background-color: rgba(255,255,255,0.1);
+    box-shadow: none;
+    transition: all 200ms ease;
 }

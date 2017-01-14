@@ -1,5 +1,8 @@
 {
     "name": "wi.core.tabs",
-    "version": "0.0.3",
-    "author": "André Ferreira <andrehrf@gmail.com>"
+    "version": "0.1.1",
+    "author": "André Ferreira <andrehrf@gmail.com>",
+    "dependencies": {
+        "deepstreamIO/golden-layout": "1.5.6"
+    }
 }

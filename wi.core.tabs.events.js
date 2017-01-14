@@ -10,9 +10,70 @@
  *  @license MIT
  */
 
-"use strict";
+"use strict";        
 
-(function(){
+(function(){    
+    var config = {content: [{type: 'stack', isClosable: false, activeItemIndex: 1}]};
+    var tabsLayout = new GoldenLayout(config, $(".wi-tabs-contents"));
+    
+    $(window).resize(function(){
+        tabsLayout.updateSize($(".wi-tabs-contents").width, $(".wi-tabs-contents").height);
+    });
+        
+    tabsLayout.on('tabCreated', function(container){
+        console.log(container);
+        container.closeElement.off('click').click(function(){
+            if(confirm( 'really close this?' )){
+                container.contentItem.remove();
+            }
+        });
+    });
+        
+    tabsLayout.registerComponent('editor', function(container, state){
+        container.getElement().html("<div id='wi-ed-" + state.id + "'></div>");        
+                
+        setTimeout(function(){
+            var settings = webide.settings.getByPattern(/^ace\.editor\..*?$/i);
+            var theme = webide.settings.get("ace.editor.theme");                        
+            theme = (!theme) ? "ace/theme/twilight" : "ace/theme/" + theme;
+
+            var editor = ace.edit("wi-ed-" + state.id);
+            editor.setTheme(theme);
+
+            for(var key in state.settings){
+                if(key !== "ace.editor.theme"){
+                    if(state.settings[key] == "true") state.settings[key] = true;//Bugfix
+                    if(state.settings[key] == "false") state.settings[key] = false;//Bugfix
+
+                    if(!isNaN(parseInt(state.settings[key])))
+                        state.settings[key] = parseInt(state.settings[key]);
+
+                    editor.setOption(key.replace(/ace\.editor\./img, ""), state.settings[key]);
+                }
+            }
+
+            webide.tabs.itens[state.id].editor = editor;
+            editor.resize();
+
+            if(typeof webide.tabs.itens[state.id].cb == "function")
+                webide.tabs.itens[state.id].cb(state.id, editor);
+        }, 100);
+    });
+    
+    tabsLayout.registerComponent('url', function(container, state){
+        container.getElement().html("<div id='wi-url-" + state.id + "'></div>");
+
+        webide.getContents("GET", state.path, null, function(data){
+            $("#wi-url-" + state.id).html(data);
+            webide.forms.bind();
+
+            if(typeof webide.tabs.itens[state.id].cb == "function")
+                webide.tabs.itens[state.id].cb(state.id);
+        });
+    });
+
+    tabsLayout.init();
+
     webide.tabs = {
         /**
          * List of tabs
@@ -27,6 +88,12 @@
         tabIndex: [],
         
         /**
+         * Golden Layout
+         * @type object
+         */
+        layout: tabsLayout,
+        
+        /**
          * Function to add tab item
          * @param string title
          * @param string path
@@ -38,124 +105,37 @@
             var id = webide.createNamespace(path);
             
             if(!this.has(id)){
-                this.itens[id] = {};
-                var _this = this;
-
-                var tabListItem = document.createElement("div");
-                tabListItem.id = "wi-tl-" + id;
-                tabListItem.className = "wi-tabs-list-item animated slideInUp";
-                tabListItem.innerHTML = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"><defs><symbol id="topleft" viewBox="0 0 214 29" ><path d="M14.3 0.1L214 0.1 214 29 0 29C0 29 12.2 2.6 13.2 1.1 14.3-0.4 14.3 0.1 14.3 0.1Z"/></symbol><symbol id="topright" viewBox="0 0 214 29"><use xlink:href="#topleft"/></symbol><clipPath id="crop"><rect class="mask" width="100%" height="100%" x="0"/></clipPath></defs><svg width="50%" height="100%" transfrom="scale(-1, 1)"><use xlink:href="#topleft" width="214" height="29" class="chrome-tab-background"/><use xlink:href="#topleft" width="214" height="29" class="chrome-tab-shadow"/></svg><g transform="scale(-1, 1)"><svg width="50%" height="100%" x="-100%" y="0"><use xlink:href="#topright" width="214" height="29" class="chrome-tab-background"/><use xlink:href="#topright" width="214" height="29" class="chrome-tab-shadow"/></svg></g></svg>'+
-                                        '<div class="wi-tabs-list-item-title" title="' + path + '">' + title + "</div>";
-                                
-                tabListItem.onclick = function () { 
-                    webide.tabs.focus(id); 
+                this.itens[id] = {path: path, type: type, settings: settings, cb: cb};
+                
+                var newItemConfig = {
+                    id: id,
+                    title: title,
+                    type: 'component',
+                    componentName: type,
+                    componentState: {id: id, path: path, settings: settings, cb: cb}
                 };
 
-                document.querySelector(".wi-tabs-list-itens").appendChild(tabListItem);
-                _this.tabIndex.push("#wi-tl-" + id);
-                
-                setTimeout(function(){
-                    $("#wi-tl-" + id).removeClass("slideInUp");
-                    bindDraggabilly(id);
-                }, 1000);
-                
-                function bindDraggabilly(id){
-                    $("#wi-tl-" + id).draggabilly({
-                        axis: 'x',
-                        containment: '.wi-tabs-list-itens'
-                    });
-
-                    $("#wi-tl-" + id).each(function(elem, index){
-                        var originalTabPositionX = 0, tabEffectiveWidth = 0;
-
-                        $(this).on('dragStart', function(){
-                            var currentIndex = _this.tabIndex.indexOf("#wi-tl-" + id);
-                            tabEffectiveWidth = $(this).width() + 10;
-                            originalTabPositionX = currentIndex*tabEffectiveWidth;
-                            $(this).removeClass("slideInUp").css("position", "absolute").css("left", originalTabPositionX + "px");
-                        });
-
-                        $(this).on('dragEnd', function(){
-                            $(this).css("transform", "translate3d(0, 0, 0)").css("left", "0");
-                            $(this).css("position", "");
-                        })
-
-                        $(this).on('dragMove', (event, pointer, moveVector) => {
-                            var tabIndex = _this.tabIndex;
-                            var currentIndex = _this.tabIndex.indexOf("#wi-tl-" + id);
-                            var currentTabPositionX = originalTabPositionX + moveVector.x;
-                            var destinationIndex = Math.max(0, Math.min(_this.tabIndex.length, Math.floor((currentTabPositionX + (tabEffectiveWidth / 2)) / tabEffectiveWidth)));
-                            
-                            if(currentIndex !== destinationIndex){
-                                (destinationIndex < currentIndex) ? $(this).insertBefore(_this.tabIndex[destinationIndex]) : $(this).insertAfter(_this.tabIndex[destinationIndex]);
-
-                                var tmp = _this.tabIndex[currentIndex];
-                                _this.tabIndex[currentIndex] = _this.tabIndex[destinationIndex];
-                                _this.tabIndex[destinationIndex] = tmp;                           
-                            }
-                        });
-                    });
-                }
-               
-                var tabListContents = document.createElement("div");
-                tabListContents.id = "wi-tc-" + id;     
-                tabListContents.className = "wi-tabs-contents-item wi-tabs-editor";
-
-                switch(type){
-                    case "editor":
-                        tabListContents.innerHTML = "<div id='wi-ed-" + id + "' class='wi-tabs-contents-item-editor'></div>";  
-                        document.querySelector(".wi-tabs-contents").appendChild(tabListContents);
-                        _this.focus(id);
-                        
-                        var settings = webide.settings.getByPattern(/^ace\.editor\..*?$/i);
-                        var theme = webide.settings.get("ace.editor.theme");                        
-                        theme = (!theme) ? "ace/theme/twilight" : "ace/theme/" + theme;
-
-                        var editor = ace.edit("wi-ed-" + id);
-                        //$(".ace_scroller").mCustomScrollbar({theme:"inset"});
-                        editor.setTheme(theme);
-                        
-                        for(var key in settings){
-                            if(key !== "ace.editor.theme"){
-                                if(settings[key] == "true") settings[key] = true;//Bugfix
-                                if(settings[key] == "false") settings[key] = false;//Bugfix
-                                
-                                if(!isNaN(parseInt(settings[key])))
-                                    settings[key] = parseInt(settings[key]);
-                                
-                                editor.setOption(key.replace(/ace\.editor\./img, ""), settings[key]);
-                            }
-                        }
-                                                
-                        this.itens[id].editor = editor;
-                        editor.resize();
-                        
-                        if(typeof cb == "function")
-                            cb(id, editor);
-                    break;
-                    case "url":
-                        tabListContents.innerHTML = "<div id='wi-url-" + id + "'></div>";  
-                        document.querySelector(".wi-tabs-contents").appendChild(tabListContents);
-                        _this.focus(id);
-
-                        webide.getContents("GET", path, null, function(data){
-                            $("#wi-url-" + id).html(data);
-                            //$(".wi-scrollbar").mCustomScrollbar({set_height: "100%", theme:"inset"});
-                            webide.forms.bind();
-                            
-                            if(typeof cb == "function")
-                                cb(id);
-                        });
-                    break;
-                }
+                if(this.layout.root.contentItems[0])
+                    this.layout.root.contentItems[0].addChild(newItemConfig);
             }
             else{
-                this.focus(id);
+                //focus
             }
+        },
+       
+        /**
+         * Functio to remove tab
+         * 
+         * @param string id
+         * @return void
+         */
+        remove: function(id){
+            if(this.has(has))
+                this.itens[id] = null;
         },
         
         addToolbar: function(id){   
-            $("#wi-tc-" + id).append("<div class='wi-tabs-toolbar'></div>");
+            
         },
         
         /**

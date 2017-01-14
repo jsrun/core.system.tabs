@@ -27,8 +27,8 @@ module.exports = {
      * @type object
      */
     assets: {
-        css: [__dirname + "/wi.core.tabs.style.css"],
-        js: [__dirname + "/wi.core.tabs.events.js"]
+        css: [__dirname + "/golden-layout/src/css/goldenlayout-base.css", __dirname + "/golden-layout/src/css/goldenlayout-dark-theme.css", __dirname + "/wi.core.tabs.style.css"],
+        js: [__dirname + "/golden-layout/dist/goldenlayout.min.js", __dirname + "/wi.core.tabs.events.js"]
     },
     
     /**
