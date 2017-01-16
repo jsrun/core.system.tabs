@@ -4,7 +4,8 @@
   \ \  /\  / /__| |__  | | | |  | | |__     | | __ _| |__  ___ 
    \ \/  \/ / _ \ '_ \ | | | |  | |  __|    | |/ _` | '_ \/ __|
     \  /\  /  __/ |_) || |_| |__| | |____ _ | | (_| | |_) \__ \
-     \/  \/ \___|_.__/_____|_____/|______(_)|_|\__,_|_.__/|___/                                                                                                                                                                                                                                                                                                                  
+     \/  \/ \___|_.__/_____|_____/|______(_)|_|\__,_|_.__/|___/   
+                                                                                                                                                                                                                                                                                                               
 ```                                                                                                                                                 
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/jsrun/core.system.settings/master/LICENSE)

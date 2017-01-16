@@ -39,6 +39,7 @@
 
             var editor = ace.edit("wi-ed-" + state.id);
             editor.setTheme(theme);
+            editor.setOptions({enableBasicAutocompletion: true, enableSnippets: true, enableLiveAutocompletion: false});
 
             for(var key in state.settings){
                 if(key !== "ace.editor.theme"){
