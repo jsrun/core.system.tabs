@@ -12,10 +12,11 @@
 
 .wi-tabs{
     position: absolute;
-    top: 29px;
-    left: 0px;
-    right: 0px;
-    bottom: 25px;
+    margin-left: 35px;
+    top: 31px;
+    left: 5px;
+    right: 5px;
+    bottom: 31px;
     background-color: var(--wi-navbar-bg-color);
 }
 
@@ -62,11 +63,11 @@
     opacity: 1;
 }
 
-.lm_active{
+.lm_header .lm_tab.lm_active{
     margin: auto;
     overflow: hidden;
     min-width: 100px;
-    height: 24px;
+    height: 13px;
     color: #bababa;
     margin-top: 2px;
     margin-left: 0px;
@@ -93,7 +94,7 @@
     -moz-border-radius-topright: var(--wi-default-border-radius);
     border-top-left-radius: var(--wi-default-border-radius);
     border-top-right-radius: var(--wi-default-border-radius);
-    box-shadow: none !important;
+    box-shadow: var(--wi-default-box-shadow) !important;
 }
 
 .lm_controls{
