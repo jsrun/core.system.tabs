@@ -13,24 +13,29 @@
 "use strict";        
 
 (function(){    
-    var config = {content: [{type: 'stack', isClosable: false, activeItemIndex: 1}]};
+    var config = {content: [{type: 'stack', activeItemIndex: 1}]};
     var tabsLayout = new GoldenLayout(config, $(".wi-tabs-contents"));
     
+    //Update with resize
     $(window).resize(function(){
         tabsLayout.updateSize($(".wi-tabs-contents").width, $(".wi-tabs-contents").height);
     });
-        
+    
+    //Bind onclose tab
     tabsLayout.on('tabCreated', function(container){
-        console.log(container);
         container.closeElement.off('click').click(function(){
             if(confirm( 'really close this?' )){
+                webide.tabs.remove(container.contentItem.container.id);
                 container.contentItem.remove();
             }
         });
     });
         
+    //Register editor type
     tabsLayout.registerComponent('editor', function(container, state){
-        container.getElement().html("<div id='wi-ed-" + state.id + "'></div>");        
+        container.id = state.id;
+        container.getElement().html("<div id='wi-ed-" + state.id + "'></div>");     
+        webide.tabs.itens[state.id].container = container;
                 
         setTimeout(function(){
             var settings = webide.settings.getByPattern(/^ace\.editor\..*?$/i);
@@ -61,8 +66,11 @@
         }, 100);
     });
     
+    //Register url type
     tabsLayout.registerComponent('url', function(container, state){
+        container.id = state.id;
         container.getElement().html("<div id='wi-url-" + state.id + "'></div>");
+        webide.tabs.itens[state.id].container = container;
 
         webide.getContents("GET", state.path, null, function(data){
             $("#wi-url-" + state.id).html(data);
@@ -81,12 +89,6 @@
          * @type object
          */
         itens: {},
-        
-        /**
-         * Tabs index
-         * @type array
-         */
-        tabIndex: [],
         
         /**
          * Golden Layout
@@ -108,19 +110,19 @@
             if(!this.has(id)){
                 this.itens[id] = {path: path, type: type, settings: settings, cb: cb};
                 
-                var newItemConfig = {
+                if(!this.layout.root.contentItems[0])
+                    this.layout.root.addChild({type: 'stack'});
+                                        
+                this.layout.root.contentItems[0].addChild({
                     id: id,
                     title: title,
                     type: 'component',
                     componentName: type,
                     componentState: {id: id, path: path, settings: settings, cb: cb}
-                };
-
-                if(this.layout.root.contentItems[0])
-                    this.layout.root.contentItems[0].addChild(newItemConfig);
+                });
             }
             else{
-                //focus
+               this.focus(id);
             }
         },
        
@@ -131,14 +133,10 @@
          * @return void
          */
         remove: function(id){
-            if(this.has(has))
+            if(this.has(id))
                 this.itens[id] = null;
         },
-        
-        addToolbar: function(id){   
-            
-        },
-        
+               
         /**
          * Function to check for tab
          * 
@@ -146,7 +144,7 @@
          * @return boolean
          */
         has: function(id){
-            return (typeof this.itens[id] == "object");
+            return (typeof this.itens[id] == "object" && this.itens[id] !== null);
         },
         
         /**
@@ -168,10 +166,12 @@
          */
         focus: function(id){
             if(this.has(id)){
-                $(".wi-tabs-list-item-active").removeClass("wi-tabs-list-item-active");
+                console.log(this.itens[id].container);
+                this.layout.selectItem(this.itens[id].container);
+                /*$(".wi-tabs-list-item-active").removeClass("wi-tabs-list-item-active");
                 $(".wi-tabs-contents-item-active").removeClass("wi-tabs-contents-item-active");
                 $("#wi-tl-" + id).addClass("wi-tabs-list-item-active");
-                $("#wi-tc-" + id).addClass("wi-tabs-contents-item-active");
+                $("#wi-tc-" + id).addClass("wi-tabs-contents-item-active");*/
             }
         },
         
