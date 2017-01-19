@@ -62,7 +62,7 @@
             editor.resize();
 
             if(typeof webide.tabs.itens[state.id].cb == "function")
-                webide.tabs.itens[state.id].cb(state.id, editor);
+                setTimeout(function(state, editor){ webide.tabs.itens[state.id].cb(state.id, editor); }, 300, state, editor);
         }, 100);
     });
     
@@ -77,8 +77,17 @@
             webide.forms.bind();
 
             if(typeof webide.tabs.itens[state.id].cb == "function")
-                webide.tabs.itens[state.id].cb(state.id);
+                setTimeout(function(state){ webide.tabs.itens[state.id].cb(state.id); }, 300, state);
         });
+    });
+    
+    tabsLayout.registerComponent('stream', function(container, state){
+        container.id = state.id;
+        container.getElement().html("<div id='wi-ed-" + state.id + "'></div><div id='wi-stream-" + state.id + "'></div>");
+        webide.tabs.itens[state.id].container = container;
+        
+        if(typeof webide.tabs.itens[state.id].cb == "function")
+            setTimeout(function(state){ webide.tabs.itens[state.id].cb(state.id); }, 300, state);
     });
 
     tabsLayout.init();
@@ -112,14 +121,19 @@
                 
                 if(!this.layout.root.contentItems[0])
                     this.layout.root.addChild({type: 'stack'});
-                                        
-                this.layout.root.contentItems[0].addChild({
+                
+                var item = {
                     id: id,
                     title: title,
                     type: 'component',
                     componentName: type,
                     componentState: {id: id, path: path, settings: settings, cb: cb}
-                });
+                };
+                
+                for(var key in settings)
+                    item[key] = settings[key];
+                                        
+                this.layout.root.contentItems[0].addChild(item);
             }
             else{
                this.focus(id);

@@ -17,12 +17,43 @@
     left: 5px;
     right: 5px;
     bottom: 31px;
-    background-color: var(--wi-navbar-bg-color);
+    background-color: var(--wi-default-bg-color);
 }
 
 .wi-tabs-contents{
     width: 100%;
     height: 100%;
+}
+
+.wi-stream-progress-shadow{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 100;
+}
+
+.wi-stream-progress{
+    position: absolute;
+    margin-left: -150px;
+    margin-top: -10px;
+    left: 50%;
+    top: 50%;
+    width: 296px;
+    height: 16px;
+    padding: 2px;
+    background-color: var(--wi-default-bg3-color);
+    border: var(--wi-default-border);
+    box-shadow: var(--wi-default-box-shadow);
+    z-index: 3000;
+}
+
+.wi-stream-progress-bar{
+    width: 0%;
+    height: 16px;
+    background-color: var(--wi-default-bg-color-featured);
 }
 
 .lm_goldenlayout{
