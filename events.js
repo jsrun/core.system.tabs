@@ -12,9 +12,8 @@
 
 "use strict";        
 
-(function(){    
-    var config = {content: [{type: 'stack', activeItemIndex: 1}]};
-    var tabsLayout = new GoldenLayout(config, $(".wi-tabs-contents"));
+webide.module("tabs", function(){    
+    var tabsLayout = new GoldenLayout({content: []}, $(".wi-tabs-contents"));
     
     //Update with resize
     $(window).resize(function(){
@@ -74,13 +73,14 @@
 
         webide.getContents("GET", state.path, null, function(data){
             $("#wi-url-" + state.id).html(data);
-            webide.forms.bind();
+            //webide.forms.bind();
 
             if(typeof webide.tabs.itens[state.id].cb == "function")
                 setTimeout(function(state){ webide.tabs.itens[state.id].cb(state.id); }, 300, state);
         });
     });
     
+    //Register stream type
     tabsLayout.registerComponent('stream', function(container, state){
         container.id = state.id;
         container.getElement().html("<div id='wi-ed-" + state.id + "'></div><div id='wi-stream-" + state.id + "'></div>");
@@ -92,7 +92,7 @@
 
     tabsLayout.init();
 
-    webide.tabs = {
+    this.extends("tabs", {
         /**
          * List of tabs
          * @type object
@@ -114,7 +114,7 @@
          * @return void
          */
         add: function(title, path, type, settings, cb){
-            var id = webide.createNamespace(path);
+            var id = this.createNamespace(path);
             
             if(!this.has(id)){
                 this.itens[id] = {path: path, type: type, settings: settings, cb: cb};
@@ -168,7 +168,7 @@
          * @return boolean
          */
         hasByPath: function(path){
-            var id = webide.createNamespace(path);
+            var id = this.createNamespace(path);
             return this.has(id);
         },
         
@@ -196,7 +196,7 @@
          * @return void
          */
         focusByPath: function(path){
-            var id = webide.createNamespace(path);
+            var id = this.createNamespace(path);
             this.focus(id);
         },
         
@@ -208,5 +208,5 @@
         getAll: function(){
             return this.itens;
         }
-    };    
-})();
+    });    
+});

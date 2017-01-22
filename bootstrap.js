@@ -27,8 +27,8 @@ module.exports = {
      * @type object
      */
     assets: {
-        css: [__dirname + "/golden-layout/src/css/goldenlayout-base.css", __dirname + "/golden-layout/src/css/goldenlayout-dark-theme.css", __dirname + "/wi.core.tabs.style.css"],
-        js: [__dirname + "/golden-layout/dist/goldenlayout.min.js", __dirname + "/wi.core.tabs.events.js"]
+        css: [__dirname + "/node_modules/golden-layout/src/css/goldenlayout-base.css", __dirname + "/node_modules/golden-layout/src/css/goldenlayout-dark-theme.css"],
+        js: [__dirname + "/node_modules/golden-layout/dist/goldenlayout.min.js"]
     },
     
     /**
@@ -38,6 +38,6 @@ module.exports = {
      * @return string
      */
     getTemplate: function(settings, dirname, argv, app, i18n, passport, mongodb, webide){
-        return TemplateEngine(__dirname + "/wi.core.tabs.tpl.ejs").seti18n(i18n).render();
+        return TemplateEngine(__dirname + "/template.ejs").seti18n(i18n).render();
     }
 };
