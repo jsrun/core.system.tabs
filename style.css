@@ -70,6 +70,10 @@
     box-shadow: none !important;
 }
 
+.lm_title{
+    color: var(--wi-default-color2);
+}
+
 .lm_active{
     background-color: var(--wi-default-bg2-color) !important;
     border: var(--wi-default-border) !important;
