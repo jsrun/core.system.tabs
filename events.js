@@ -22,6 +22,7 @@ webide.module("tabs", function(){
     
     //Bind onclose tab
     tabsLayout.on('tabCreated', function(container){
+        container.element.attr('title', container.contentItem.config.tooltip);
         container.closeElement.off('click').click(function(){
             webide.tabs.remove(container.contentItem.container.id, function(){
                 container.contentItem.remove();
