@@ -37,7 +37,7 @@ module.exports = {
      * @param object webide
      * @return string
      */
-    getTemplate: function(settings, dirname, argv, app, i18n, passport, mongodb, webide){
+    getTemplate: function(i18n){
         return TemplateEngine(__dirname + "/template.ejs").seti18n(i18n).render();
     }
 };
