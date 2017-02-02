@@ -12,9 +12,6 @@
 
 "use strict";
 
-let SystemException = require("../wi.core.exception.js"),
-    TemplateEngine = require("../wi.core.template.js");
-
 module.exports = {
     /**
      * List of navbar itens
@@ -37,7 +34,7 @@ module.exports = {
      * @param object webide
      * @return string
      */
-    getTemplate: function(i18n){
-        return TemplateEngine(__dirname + "/template.ejs").seti18n(i18n).render();
+    getTemplate: function(i18n, template){
+        return new template(__dirname + "/template.ejs").seti18n(i18n).render();
     }
 };
